@@ -32,7 +32,6 @@ O sistema será desenvolvido como parte da disciplina **Oficina de Integração 
 
 * Geração de certificados para alunos
 * Download de certificados
-* Validação de autenticidade
 
 ---
 
