@@ -31,6 +31,9 @@ export function criarModelUsuario(DB: Sequelize): ModelStatic<IUsuario> {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      usu_sessao: {
+        type: DataTypes.TEXT,
+      },
     },
     {
       tableName: "usuario",

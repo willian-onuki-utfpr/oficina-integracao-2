@@ -1,26 +1,26 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { Home } from '../pages/Home';
-import { Usuarios } from '../pages/Usuarios';
-import { Oficinas } from '../pages/Oficinas';
-import { Header } from '../components/Header';
+import { Home } from "../pages/Home";
+import { Usuarios } from "../pages/Usuarios";
+import { Oficinas } from "../pages/Oficinas";
+
+import { PrivateRoute } from "./PrivateRoute";
+import { Login } from "../pages/Login";
 
 export function AppRoutes() {
   return (
     <BrowserRouter>
-      <Header/>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/login" element={
+          <Login />
+          } />
+        <Route element={<PrivateRoute />}>
+          <Route path="/" element={<Home />} />
 
-        <Route
-          path="/usuarios"
-          element={<Usuarios />}
-        />
+          <Route path="/usuarios" element={<Usuarios />} />
 
-        <Route
-          path="/oficinas"
-          element={<Oficinas />}
-        />
+          <Route path="/oficinas" element={<Oficinas />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

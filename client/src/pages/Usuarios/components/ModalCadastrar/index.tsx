@@ -1,8 +1,6 @@
 import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { type InstanceProps, create } from "react-modal-promise";
-import { api } from "../../../../services/api";
-import { toast } from "react-toastify";
 import type { IUsuario } from "../../interface";
 import { editarUsuario } from "../../services/editarUsuario";
 import { criarUsuario } from "../../services/criarUsuario";

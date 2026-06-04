@@ -1,21 +1,9 @@
-import { useEffect } from 'react';
 import { Card, Container } from 'react-bootstrap';
-import { api } from '../../services/api';
 
 interface Props {}
 
 export const Home = ({}: Props) => {
-  // const fetch = async () => {
-  //   try {
-  //     const res = await api.get("/");
-  //     alert(res.data) 
-  //   } catch (error) {
-  //    alert(error) 
-  //   }
-  // }
-  // useEffect(() => {
-  //  fetch() 
-  // },[])
+
   return (
   <Container className="mt-4">
       <Card>

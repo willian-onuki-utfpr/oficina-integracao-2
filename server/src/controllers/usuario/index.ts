@@ -4,6 +4,8 @@ import { InferAttributes } from "sequelize";
 import { criarModelUsuario } from "../../models/usuario";
 import sequelize from "../../config/database";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import authConfig from "../../config/auth";
 
 const create = async (
   req: Request<{}, {}, { usuario: Partial<InferAttributes<IUsuario>> }>,
@@ -88,14 +90,13 @@ const update = async (
   }
 };
 
-const findAll = async (
-  req: Request,
-  res: Response,
-) => {
+const findAll = async (req: Request, res: Response) => {
   const Usuario = criarModelUsuario(sequelize);
 
   try {
-    const usuarios = await Usuario.findAll({attributes: ["usu_id", "usu_nome", "usu_email", "usu_tipo"]});
+    const usuarios = await Usuario.findAll({
+      attributes: ["usu_id", "usu_nome", "usu_email", "usu_tipo"],
+    });
 
     res.status(200).json(usuarios);
   } catch (error) {
@@ -123,9 +124,82 @@ const destroy = async (
   }
 };
 
+const login = async (
+  req: Request<
+    {},
+    {},
+    {
+      usu_email: string;
+      usu_senha: string;
+    }
+  >,
+  res: Response,
+) => {
+  const { usu_email, usu_senha } = req.body;
+  const Usuario = criarModelUsuario(sequelize);
+  const transaction = await sequelize.transaction();
+
+  try {
+    const usuario = await Usuario.findOne({
+      where: {
+        usu_email,
+      },
+      transaction,
+    });
+
+    if (!usuario) throw Error;
+
+    const senhaCorreta = await bcrypt.compare(usu_senha, usuario.usu_senha);
+
+    if (!senhaCorreta) throw Error;
+
+    const sessao = crypto.randomUUID();
+
+    await Usuario.update(
+      {
+        usu_sessao: sessao,
+      },
+      {
+        where: {
+          usu_id: usuario.usu_id,
+        },
+        transaction,
+      },
+    );
+
+    const token = jwt.sign(
+      {
+        id: usuario.usu_id,
+        tipo: usuario.usu_tipo,
+        usu_sessao: sessao,
+      },
+      authConfig.secret as string,
+      {
+        expiresIn: "1d",
+      },
+    );
+
+    await transaction.commit();
+    res.status(200).json({
+      usuario: {
+        id: usuario.usu_id,
+        nome: usuario.usu_nome,
+        email: usuario.usu_email,
+        tipo: usuario.usu_tipo,
+      },
+      token,
+    });
+  } catch (error) {
+    await transaction.rollback();
+    console.log(error);
+    res.status(500).json({ message: "Ocorreu um erro ao realizar o login." });
+  }
+};
+
 export default {
   create,
   update,
   findAll,
-  destroy
+  destroy,
+  login,
 };
