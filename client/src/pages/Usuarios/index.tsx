@@ -14,6 +14,7 @@ import type { IUsuario } from "./interface";
 import { useEffect, useMemo, useState } from "react";
 import { buscarUsuarios } from "./services/buscarUsuarios";
 import { excluirUsuario } from "./services/excluirUsuario";
+import { ModalConfirmacao } from "../../components/ModalConfirmacao";
 
 interface Props {}
 
@@ -39,6 +40,13 @@ export const Usuarios = ({}: Props) => {
   };
 
   const handleExcluir = async (usu_id: number) => {
+    const confirmacao = await ModalConfirmacao({
+      variant: "danger",
+      message: "Tem certeza que deseja excluir esse usuário?"
+    })
+
+    if (!confirmacao) return;
+
     await excluirUsuario(usu_id);
     await fetch();
   };
@@ -149,23 +157,24 @@ export const Usuarios = ({}: Props) => {
             <option value="professor">Professor</option>
           </Form.Select>
         </Form.Group>
-        {
-          !!Object.values(filtros).some(value => !!(value as string).length)
-        }
-        <Col md={2} className="d-flex align-items-end justify-content-start">
-          <Button
-            variant="outline-secondary"
-            onClick={() =>
-              setFiltros({
-                usu_nome: "",
-                usu_email: "",
-                usu_tipo: "",
-              })
-            }
-          >
-            Limpar filtros
-          </Button>
-        </Col>
+        {!!Object.values(filtros).some(
+          (value) => !!(value as string).length,
+        ) && (
+          <Col md={2} className="d-flex align-items-end justify-content-start">
+            <Button
+              variant="outline-secondary"
+              onClick={() =>
+                setFiltros({
+                  usu_nome: "",
+                  usu_email: "",
+                  usu_tipo: "",
+                })
+              }
+            >
+              Limpar filtros
+            </Button>
+          </Col>
+        )}
       </Col>
       <Col
         md="auto"

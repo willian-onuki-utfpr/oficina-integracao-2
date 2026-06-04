@@ -10,6 +10,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/usuario", routes.usuarioRouter);
+app.use("/tema", routes.temaRouter);
 
 const PORT = process.env.PORT || 3000;
 

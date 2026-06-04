@@ -34,6 +34,10 @@ export function Header() {
           <Nav.Link as={Link} to="/oficinas">
             Oficinas
           </Nav.Link>
+
+          <Nav.Link as={Link} to="/temas">
+            Temas 
+          </Nav.Link>
         </Nav>
 
         <Nav>

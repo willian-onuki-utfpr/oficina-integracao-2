@@ -6,6 +6,7 @@ import { Oficinas } from "../pages/Oficinas";
 
 import { PrivateRoute } from "./PrivateRoute";
 import { Login } from "../pages/Login";
+import { Temas } from "../pages/Temas";
 
 export function AppRoutes() {
   return (
@@ -20,6 +21,8 @@ export function AppRoutes() {
           <Route path="/usuarios" element={<Usuarios />} />
 
           <Route path="/oficinas" element={<Oficinas />} />
+
+          <Route path="/temas" element={<Temas />} />
         </Route>
       </Routes>
     </BrowserRouter>
