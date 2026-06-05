@@ -15,10 +15,12 @@ import { useEffect, useMemo, useState } from "react";
 import { buscarUsuarios } from "./services/buscarUsuarios";
 import { excluirUsuario } from "./services/excluirUsuario";
 import { ModalConfirmacao } from "../../components/ModalConfirmacao";
+import { useAuth } from "../../contexts/authContext";
 
 interface Props {}
 
 export const Usuarios = ({}: Props) => {
+  const {usuario: usuarioAtual} = useAuth()
   const [usuarios, setUsuarios] = useState<Partial<IUsuario>[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [filtros, setFiltros] = useState<Partial<IUsuario>>({
@@ -42,8 +44,8 @@ export const Usuarios = ({}: Props) => {
   const handleExcluir = async (usu_id: number) => {
     const confirmacao = await ModalConfirmacao({
       variant: "danger",
-      message: "Tem certeza que deseja excluir esse usuário?"
-    })
+      message: "Tem certeza que deseja excluir esse usuário?",
+    });
 
     if (!confirmacao) return;
 
@@ -71,7 +73,7 @@ export const Usuarios = ({}: Props) => {
       const filtroTipo =
         !filtros.usu_tipo || usuario.usu_tipo === filtros.usu_tipo;
 
-      return filtroNome && filtroEmail && filtroTipo;
+      return filtroNome && filtroEmail && filtroTipo && usuarioAtual.id !== usuario.usu_id;
     });
   }, [usuarios, filtros]);
 
@@ -82,8 +84,12 @@ export const Usuarios = ({}: Props) => {
         <td>{usuario.usu_email}</td>
         <td>{capitalizeFirstLetter(usuario.usu_tipo)}</td>
         <td className="d-flex align-items-center justify-content-center gap-2">
-          <Button size="sm" variant="primary">
-            <FiEdit onClick={() => handleModalEditar(usuario)} />
+          <Button
+            size="sm"
+            variant="primary"
+            onClick={() => handleModalEditar(usuario)}
+          >
+            <FiEdit />
           </Button>
           <Button
             size="sm"

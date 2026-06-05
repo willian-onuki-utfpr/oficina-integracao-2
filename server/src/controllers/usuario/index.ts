@@ -1,18 +1,17 @@
 import { Request, Response } from "express";
 import { IUsuario } from "../../models/usuario/types";
 import { InferAttributes } from "sequelize";
-import { criarModelUsuario } from "../../models/usuario";
 import sequelize from "../../config/database";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import authConfig from "../../config/auth";
+import { Usuario } from "../../models";
 
 const create = async (
   req: Request<{}, {}, { usuario: Partial<InferAttributes<IUsuario>> }>,
   res: Response,
 ) => {
   const { usuario } = req.body;
-  const Usuario = criarModelUsuario(sequelize);
   const transaction = await sequelize.transaction();
 
   try {
@@ -55,7 +54,6 @@ const update = async (
   const usu_id = Number(req.params.usu_id);
   const { usuario } = req.body;
 
-  const Usuario = criarModelUsuario(sequelize);
   const transaction = await sequelize.transaction();
 
   try {
@@ -91,7 +89,6 @@ const update = async (
 };
 
 const findAll = async (req: Request, res: Response) => {
-  const Usuario = criarModelUsuario(sequelize);
 
   try {
     const usuarios = await Usuario.findAll({
@@ -110,7 +107,6 @@ const destroy = async (
   res: Response,
 ) => {
   const usu_id = Number(req.params.usu_id);
-  const Usuario = criarModelUsuario(sequelize);
 
   try {
     await Usuario.destroy({
@@ -136,7 +132,6 @@ const login = async (
   res: Response,
 ) => {
   const { usu_email, usu_senha } = req.body;
-  const Usuario = criarModelUsuario(sequelize);
   const transaction = await sequelize.transaction();
 
   try {
@@ -196,10 +191,28 @@ const login = async (
   }
 };
 
+const findAllProfessores = async (req: Request, res: Response) => {
+
+  try {
+    const professores = await Usuario.findAll({
+      where: {
+        usu_tipo: "professor",
+      },
+      attributes: ["usu_id", "usu_nome", "usu_email", "usu_tipo"],
+    });
+
+    res.status(200).json(professores);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Ocorreu um erro ao listar os professores" });
+  }
+};
+
 export default {
   create,
   update,
   findAll,
   destroy,
   login,
+  findAllProfessores
 };

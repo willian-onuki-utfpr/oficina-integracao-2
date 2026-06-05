@@ -8,9 +8,11 @@ import { criarModelCertificado } from "./certificado";
 import { criarModelAula } from "./aula";
 import { criarModelOficina } from "./oficina";
 import { criarModelTema } from "./tema";
+import { criarModelConfiguracaoOficina } from "./ConfiguracaoOficina";
 
 export const Usuario = criarModelUsuario(sequelize);
 export const Oficina = criarModelOficina(sequelize);
+export const ConfiguracaoOficina = criarModelConfiguracaoOficina(sequelize);
 export const Matricula = criarModelMatricula(sequelize);
 export const Aula = criarModelAula(sequelize);
 export const OficinaTutor = criarModelOficinaTutor(sequelize);
@@ -44,11 +46,15 @@ export const Tema = criarModelTema(sequelize);
   Oficina.hasMany(Aula, {foreignKey: "of_id", as: "aulas"})
   Oficina.hasMany(Matricula, {foreignKey: "of_id", as: "matriculas"})
   Oficina.hasMany(OficinaTutor, {foreignKey: "of_id", as: "tutores"})
+  Oficina.hasMany(ConfiguracaoOficina, {foreignKey: "of_id", as: "configuracoes"})
   Oficina.belongsTo(Tema, {foreignKey: "t_id", as: "tema"})
 
   // Oficina tutor
   OficinaTutor.belongsTo(Usuario, { foreignKey: "usu_id", as: "usuario" });
   OficinaTutor.belongsTo(Oficina, { foreignKey: "of_id", as: "oficina" });
+
+  // Configuração oficina
+  ConfiguracaoOficina.belongsTo(Oficina, {foreignKey: "of_id", as: "oficina"})
 
   // Presença
   Presenca.belongsTo(Aula, {foreignKey: "a_id", as: "aula"})

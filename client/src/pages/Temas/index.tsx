@@ -41,8 +41,8 @@ export const Temas = ({}: Props) => {
   const handleExcluir = async (t_id: number) => {
     const confirmacao = await ModalConfirmacao({
       variant: "danger",
-      message: "Tem certeza que deseja excluir esse tema?"
-    })
+      message: "Tem certeza que deseja excluir esse tema?",
+    });
 
     if (!confirmacao) return;
 
@@ -54,11 +54,9 @@ export const Temas = ({}: Props) => {
     return (temas || []).filter((tema) => {
       const filtroNome =
         !filtros.t_nome ||
-        tema.t_nome
-          ?.toLowerCase()
-          .includes(filtros.t_nome.toLowerCase());
+        tema.t_nome?.toLowerCase().includes(filtros.t_nome.toLowerCase());
 
-      return filtroNome ;
+      return filtroNome;
     });
   }, [temas, filtros]);
 
@@ -67,8 +65,12 @@ export const Temas = ({}: Props) => {
       <tr key={`linha-usuario-${tema.t_id}-${index}`}>
         <td>{tema.t_nome}</td>
         <td className="d-flex align-items-center justify-content-center gap-2">
-          <Button size="sm" variant="primary">
-            <FiEdit onClick={() => handleModalEditar(tema)} />
+          <Button
+            size="sm"
+            variant="primary"
+            onClick={() => handleModalEditar(tema)}
+          >
+            <FiEdit />
           </Button>
           <Button
             size="sm"

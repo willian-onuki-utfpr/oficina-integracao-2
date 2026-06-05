@@ -2,11 +2,11 @@ import { Model } from "sequelize";
 
 export interface IOficina extends Model {
   of_id: number;
-  of_nome: number;
-  of_descricao: number;
+  t_id: number;
+  of_descricao: string;
   of_data_inicio: Date;
   of_data_fim: Date;
   of_carga_horaria: number;
-  of_percentual_minimo_presenca: number;
-  of_professor_responsavel: number;
+  of_limite_faltas: number;
+  of_professor_responsave: number;
 }

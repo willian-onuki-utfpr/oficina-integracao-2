@@ -14,8 +14,8 @@ export function criarModelOficina(DB: Sequelize): ModelStatic<IOficina> {
         autoIncrement: true,
         allowNull: false,
       },
-      of_nome: {
-        type: DataTypes.STRING,
+      t_id: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       of_descricao: {
@@ -33,7 +33,7 @@ export function criarModelOficina(DB: Sequelize): ModelStatic<IOficina> {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      of_percentual_minimo_presenca: {
+      of_limite_faltas: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -44,6 +44,7 @@ export function criarModelOficina(DB: Sequelize): ModelStatic<IOficina> {
     },
     {
       tableName: "oficina",
+      timestamps: false,
     },
   );
 

@@ -1,6 +1,5 @@
-import React, { useMemo } from 'react';
-import Select, { components, type OptionProps } from 'react-select';
-
+import React, { useMemo } from "react";
+import Select, { components, type OptionProps } from "react-select";
 
 export interface OptionType {
   id: number;
@@ -32,22 +31,22 @@ const Seletor: React.FC<Props> = ({
   mensagemSemOpcoes,
   onModal,
   required = false,
-  disabledMessage = '',
+  disabledMessage = "",
 }) => {
-
   const Option = (optionProps: OptionProps<OptionType>) => {
     const { data } = optionProps;
     return (
       <components.Option {...optionProps}>
         <span
           className="d-flex align-items-center justify-content-between"
-          style={data.isDisabled ? { opacity: 0.5, cursor: 'default' } : {}}>
+          style={data.isDisabled ? { opacity: 0.5, cursor: "default" } : {}}
+        >
           <span className="ml-2">
             {data.label}
             {data.isDisabled ? (
               <span className="text-muted">{` (${disabledMessage})`}</span>
             ) : (
-              ''
+              ""
             )}
           </span>
         </span>
@@ -58,15 +57,15 @@ const Seletor: React.FC<Props> = ({
   const customStyles = {
     control: (provided: any, state: any) => ({
       ...provided,
-      display: 'flex',
-      borderRadius: '4px',
-      padding: '0 0 0 4px',
-      alignItems: 'center',
+      display: "flex",
+      borderRadius: "4px",
+      padding: "0 0 0 4px",
+      alignItems: "center",
       // borderColor: tema.cor.input.border,
       // backgroundColor: state.isDisabled
       //   ? tema.cor.input.bgDisabled
       //   : tema.cor.input.bg,
-      textAlign: 'left',
+      textAlign: "left",
     }),
     singleValue: (provided: any) => ({
       ...provided,
@@ -79,37 +78,37 @@ const Seletor: React.FC<Props> = ({
     clearIndicator: (provided: any) => ({
       ...provided,
       // color: tema.cor.input.text,
-      '&:hover': {
+      "&:hover": {
         // color: tema.cor.input.text,
       },
     }),
     dropdownIndicator: (provided: any) => ({
       ...provided,
       // color: tema.cor.input.text,
-      '&:hover': {
+      "&:hover": {
         // color: tema.cor.input.text,
       },
     }),
     placeholder: (provided: any) => ({
       ...provided,
-      color: '#9aa5b1',
-      textAlign: 'left',
+      color: "#9aa5b1",
+      textAlign: "left",
     }),
     menu: (provided: any) => ({
       ...provided,
-      '& .fast-option': {
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
+      "& .fast-option": {
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
       },
       // backgroundColor: tema.cor.input.bg,
       zIndex: 10,
     }),
     option: (provided: any, state: any) => ({
       ...provided,
-      cursor: 'pointer',
+      cursor: "pointer",
 
-      '&:hover': {
+      "&:hover": {
         // backgroundColor: tema.cor.input.selectBgFocused,
         // color: tema.cor.input.bg,
       },
@@ -126,7 +125,7 @@ const Seletor: React.FC<Props> = ({
       (options as any)
         ?.flatMap((opt: any) => opt?.options)
         .find((opt: any) => opt?.value === Number(valor)) ||
-      ''
+      ""
     );
   }, [options, valor]);
 
@@ -148,9 +147,9 @@ const Seletor: React.FC<Props> = ({
       styles={customStyles}
       placeholder="Selecione..."
       components={{ Option }}
-      noOptionsMessage={() => mensagemSemOpcoes || 'Sem opções'}
+      noOptionsMessage={() => mensagemSemOpcoes || "Sem opções"}
       isDisabled={desabilitar}
-      menuPosition={'fixed'}
+      menuPosition={"fixed"}
       required={required}
       {...(onModal
         ? {}

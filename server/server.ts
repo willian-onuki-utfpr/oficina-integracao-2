@@ -11,6 +11,8 @@ app.use(cors());
 
 app.use("/usuario", routes.usuarioRouter);
 app.use("/tema", routes.temaRouter);
+app.use("/oficina", routes.oficinaRouter);
+app.use("/aula", routes.aulaRouter);
 
 const PORT = process.env.PORT || 3000;
 
