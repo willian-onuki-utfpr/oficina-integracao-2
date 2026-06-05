@@ -135,20 +135,27 @@ Serão utilizados diferentes tipos de testes:
 
 ### ▶️ Backend
 
+### 🔧 Pré-requisitos
+
+* Node.js versão 20.11.0
+  
 ```bash
-cd backend
+cd server
 npm install
-npm run dev
+npm run start
 ```
 
 ---
 
 ### ▶️ Frontend
+### 🔧 Pré-requisitos
 
+* Node.js versão 20.19.0
+  
 ```bash
-cd frontend
+cd client
 npm install
-npm start
+npm run start
 ```
 
 ---
