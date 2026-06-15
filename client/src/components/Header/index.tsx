@@ -14,7 +14,7 @@ export function Header() {
   const handleLogout = () => {
     logout();
 
-    navigate("/");
+    navigate("/login");
   };
 
   return (
@@ -23,21 +23,24 @@ export function Header() {
         <Navbar.Brand>Sistema de Oficinas</Navbar.Brand>
 
         <Nav className="me-auto">
-          <Nav.Link as={Link} to="/">
-            Dashboard
-          </Nav.Link>
+          {usuario?.tipo !== "aluno" && (
+            <>
+              <Nav.Link as={Link} to="/">
+                Dashboard
+              </Nav.Link>
+              <Nav.Link as={Link} to="/usuarios">
+                Usuários
+              </Nav.Link>
 
-          <Nav.Link as={Link} to="/usuarios">
-            Usuários
-          </Nav.Link>
+              <Nav.Link as={Link} to="/oficinas">
+                Oficinas
+              </Nav.Link>
 
-          <Nav.Link as={Link} to="/oficinas">
-            Oficinas
-          </Nav.Link>
-
-          <Nav.Link as={Link} to="/temas">
-            Temas 
-          </Nav.Link>
+              <Nav.Link as={Link} to="/temas">
+                Temas
+              </Nav.Link>
+            </>
+          )}
         </Nav>
 
         <Nav>

@@ -7,7 +7,7 @@ function App() {
     <>
       <ToastContainer />
       <ModalContainer />
-      <AppRoutes />;
+      <AppRoutes />
     </>
   );
 }

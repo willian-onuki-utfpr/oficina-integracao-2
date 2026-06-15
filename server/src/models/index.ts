@@ -38,7 +38,7 @@ export const Tema = criarModelTema(sequelize);
   Certificado.belongsTo(Matricula, { foreignKey: "m_id", as: "matricula" });
 
   // Matricula
-  Matricula.belongsTo(Usuario, { foreignKey: "usu_id", as: "usuario" });
+  Matricula.belongsTo(Usuario, { foreignKey: "usu_id", as: "aluno" });
   Matricula.belongsTo(Oficina, { foreignKey: "of_id", as: "oficina" });
   Matricula.hasOne(Certificado, { foreignKey: "m_id", as: "certificado" });
 

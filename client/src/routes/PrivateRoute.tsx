@@ -1,8 +1,6 @@
-// routes/PrivateLayout.tsx
-
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
-import { Header } from "../components/Header";
+import { GenericPage } from "../components/GenericPage";
 
 export const PrivateRoute = () => {
   const { autenticado } = useAuth();
@@ -12,10 +10,8 @@ export const PrivateRoute = () => {
   }
 
   return (
-    <>
-      <Header />
+    <GenericPage>
       <Outlet />
-    </>
+    </GenericPage>
   );
-
 };

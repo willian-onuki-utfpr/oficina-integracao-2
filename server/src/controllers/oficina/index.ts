@@ -4,9 +4,11 @@ import { IOficina } from "../../models/oficina/types";
 import {
   Aula,
   ConfiguracaoOficina,
+  Matricula,
   Oficina,
   OficinaTutor,
   Tema,
+  Usuario,
 } from "../../models";
 import { IOficinaTutor } from "../../models/oficina_tutor/types";
 import sequelize from "../../config/database";
@@ -132,14 +134,21 @@ const destroy = async (
       where: {
         of_id,
       },
-      transaction
-    })
+      transaction,
+    });
+
+    await Matricula.destroy({
+      where: {
+        of_id,
+      },
+      transaction,
+    });
 
     await Oficina.destroy({
       where: {
         of_id,
       },
-      transaction
+      transaction,
     });
 
     await transaction.commit();
@@ -153,9 +162,78 @@ const destroy = async (
   }
 };
 
+const findByProfessorCriador = async (
+  req: Request<{ of_professor_responsavel: string }>,
+  res: Response,
+) => {
+  const of_professor_responsavel = Number(req.params.of_professor_responsavel);
+  const transaction = await sequelize.transaction();
+
+  try {
+    const usuario = await Usuario.findByPk(of_professor_responsavel, {
+      transaction,
+    });
+
+    if (usuario?.usu_tipo !== "professor")
+      throw Error("Usuário não permitido.");
+
+    const oficinas = await Oficina.findAll({
+      where: {
+        of_professor_responsavel,
+      },
+      include: [
+        {
+          model: Aula,
+          as: "aulas",
+        },
+        {
+          model: OficinaTutor,
+          as: "tutores",
+          include: [
+            {
+              model: Usuario,
+              as: "usuario",
+            },
+          ],
+        },
+        {
+          model: ConfiguracaoOficina,
+          as: "configuracoes",
+        },
+        {
+          model: Tema,
+          as: "tema",
+        },
+        {
+          model: Matricula,
+          as: "matriculas",
+          include: [
+            {
+              model: Usuario,
+              as: "aluno",
+            },
+          ],
+        },
+      ],
+      transaction,
+    });
+
+    await transaction.commit();
+    res.status(200).json(oficinas);
+  } catch (error) {
+    await transaction.rollback();
+    console.log(error);
+    res.status(500).json({
+      message:
+        "Não foi possível buscar as oficinas criadas pelo professor responsável.",
+    });
+  }
+};
+
 export default {
   create,
   findAll,
   update,
   destroy,
+  findByProfessorCriador,
 };

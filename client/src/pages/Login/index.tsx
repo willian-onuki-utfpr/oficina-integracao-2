@@ -54,7 +54,7 @@ export const Login = () => {
 
       login(response);
 
-      navigate("/");
+      navigate(response.usuario.tipo === "aluno" ? "/aluno/oficinas" : "/");
     } catch (error) {
       setErro("E-mail ou senha inválidos.");
     } finally {

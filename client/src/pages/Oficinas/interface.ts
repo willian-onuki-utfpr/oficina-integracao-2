@@ -1,4 +1,5 @@
 import type { ITema } from "../Temas/inteface";
+import type { IUsuario } from "../Usuarios/interface";
 
 export interface IOficina {
   of_id: number;
@@ -17,6 +18,7 @@ export interface IOficina {
 export interface IOficinaTutor {
   of_id: number;
   usu_id: number;
+  usuario: Partial<IUsuario>;
 }
 
 export interface IConfiguracaoOficina {
