@@ -14,6 +14,7 @@ app.use("/tema", routes.temaRouter);
 app.use("/oficina", routes.oficinaRouter);
 app.use("/aula", routes.aulaRouter);
 app.use("/matricula", routes.matriculaRouter);
+app.use("/presenca", routes.presencaRouter);
 
 const PORT = process.env.PORT || 3000;
 

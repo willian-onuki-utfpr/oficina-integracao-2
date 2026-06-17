@@ -8,6 +8,9 @@ export function criarModelPresenca(DB: Sequelize): ModelStatic<IPresenca> {
     {
       p_id: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
       },
       a_id: {
         type: DataTypes.INTEGER,
@@ -24,7 +27,7 @@ export function criarModelPresenca(DB: Sequelize): ModelStatic<IPresenca> {
     },
     {
       tableName: "presenca",
-      timestamps: false
+      timestamps: false,
     },
   );
 

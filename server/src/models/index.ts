@@ -32,6 +32,7 @@ export const Tema = criarModelTema(sequelize);
 
   // Aula
   Aula.belongsTo(Oficina, { foreignKey: "of_id", as: "oficina" });
+  Aula.hasMany(Presenca, {foreignKey: "a_id", as: "presencas"})
 
 
   // Certificado
@@ -58,3 +59,4 @@ export const Tema = criarModelTema(sequelize);
 
   // Presença
   Presenca.belongsTo(Aula, {foreignKey: "a_id", as: "aula"})
+  Presenca.belongsTo(Usuario, {foreignKey: "usu_id", as: "aluno"})

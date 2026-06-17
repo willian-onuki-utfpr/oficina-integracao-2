@@ -9,6 +9,8 @@ import { useAuth } from "../../../../contexts/authContext";
 import { cancelarMatricula } from "../../services/matricula/cancelarMatricula";
 import { FiX } from "react-icons/fi";
 import { ModalMaisInformacoes } from "../ModalMaisInformacoes";
+import { BsCalendar2Week } from "react-icons/bs";
+import { ModalFrequencia } from "../ModalFrequencia";
 
 interface Props {
   oficina: Partial<IOficina>;
@@ -31,19 +33,19 @@ export const CardOficina = ({ oficina, status, refresh }: Props) => {
       of_id: oficina.of_id,
       usu_id: usuario.id,
     });
-    await refresh()
+    await refresh();
   };
 
   const handleCancelarMatricula = async () => {
     const confirmacao = await ModalConfirmacao({
-      message: "Você realmente deseja cancelar a matrícula dessa oficina?",
+      message: "Você realmente deseja cancelar a inscrição dessa oficina?",
       variant: "danger",
     });
 
     if (!confirmacao) return;
 
     await cancelarMatricula(usuario.id, oficina.of_id);
-    await refresh()
+    await refresh();
   };
 
   return (
@@ -58,17 +60,34 @@ export const CardOficina = ({ oficina, status, refresh }: Props) => {
         className="d-flex align-items-center justify-content-start gap-2 p-2"
       >
         {status === "matriculado" ? (
-          <Button variant="danger" onClick={handleCancelarMatricula}>
-            <FiX className="mb-1 me-1" />
-            Cancelar inscrição
-          </Button>
+          <>
+            <Button variant="danger" onClick={handleCancelarMatricula}>
+              <FiX className="mb-1 me-1" />
+              Cancelar inscrição
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() =>
+                ModalFrequencia({
+                  oficina,
+                  usu_id: usuario.id,
+                })
+              }
+            >
+              <BsCalendar2Week className="mb-1 me-1" />
+              Frequência
+            </Button>
+          </>
         ) : (
           <>
             <Button variant="primary" onClick={handleCriarMatricula}>
               <ImEnter className="mb-1 me-1" />
               Inscrever-se
             </Button>
-            <Button variant="secondary" onClick={() => ModalMaisInformacoes({oficina})}>
+            <Button
+              variant="secondary"
+              onClick={() => ModalMaisInformacoes({ oficina })}
+            >
               <MdInfoOutline size={18} className="mb-1 me-1" />
               Mais informações
             </Button>

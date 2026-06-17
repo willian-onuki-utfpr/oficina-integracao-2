@@ -13,6 +13,7 @@ export interface IOficina {
   tema?: Partial<ITema>;
   tutores?: Partial<IOficinaTutor>[];
   configuracoes?: Partial<IConfiguracaoOficina>[];
+  aulas?: Partial<IAula>[];
 }
 
 export interface IOficinaTutor {

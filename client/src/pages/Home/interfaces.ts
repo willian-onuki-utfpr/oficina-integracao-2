@@ -9,3 +9,12 @@ export interface IOficinaProfessor extends IOficina {
     }
   >[];
 }
+
+export interface IPresenca {
+  p_id: number;
+  a_id: number;
+  usu_id: number;
+  p_presenca: boolean;
+  p_data_registro: Date;
+  aluno?: Partial<IUsuario>;
+}
