@@ -7,11 +7,15 @@ import { buscarOficinasParaMatricular } from "./services/oficina/buscarOficinasP
 import { useAuth } from "../../contexts/authContext";
 import { buscarOficinasMatriculadas } from "./services/oficina/buscarOficinasMatriculadas";
 
+export interface IOficinaAluno extends IOficina {
+  certificado_disponibilizado: boolean
+}
+
 interface Props {}
 
 export const OficinasCadastradas = ({}: Props) => {
   const { usuario } = useAuth();
-  const [oficinas, setOficinas] = useState<Partial<IOficina>[]>([]);
+  const [oficinas, setOficinas] = useState<Partial<IOficinaAluno>[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState("");
 
@@ -24,9 +28,9 @@ export const OficinasCadastradas = ({}: Props) => {
 
     let resOficinas = [] as Partial<IOficina>[];
     if (status === "matriculado") {
-      resOficinas = await buscarOficinasMatriculadas(usuario.id);
+      resOficinas = await buscarOficinasMatriculadas(usuario?.id || -1) || [];
     } else {
-      resOficinas = await buscarOficinasParaMatricular(usuario.id);
+      resOficinas = await buscarOficinasParaMatricular(usuario?.id || -1) || [];
     }
 
     setOficinas(resOficinas);

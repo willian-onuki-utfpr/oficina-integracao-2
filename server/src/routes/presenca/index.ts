@@ -5,8 +5,10 @@ import controller from "../../controllers/presenca";
 const presencaRouter = express.Router();
 
 presencaRouter.post("/", authMiddleware, controller.create);
+presencaRouter.post("/quantidade/", authMiddleware, controller.alterarQuantidadeFaltas);
 presencaRouter.put("/", authMiddleware, controller.update);
 presencaRouter.get("/aula/:a_id", authMiddleware, controller.findByAula);
 presencaRouter.get("/aluno/:of_id/:usu_id", authMiddleware, controller.findByAluno);
+presencaRouter.get("/faltas/:of_id/:usu_id", authMiddleware, controller.faltasAluno);
 
 export { presencaRouter };

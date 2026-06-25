@@ -3,6 +3,7 @@ import { Button, Card, Col } from "react-bootstrap";
 import type { IOficinaProfessor } from "../../interfaces";
 import { IoMdCheckboxOutline } from "react-icons/io";
 import { ModalGerenciarPresencas } from "../ModalGerenciarPresencas";
+import { ModalGerenciarCertificados } from "../ModalGerenciarCertificados";
 
 interface Props {
   oficina: Partial<IOficinaProfessor>;
@@ -37,6 +38,12 @@ export const CardOficina = ({ oficina, refresh }: Props) => {
         >
           <IoMdCheckboxOutline className="mb-1 me-1" />
           Registrar presença
+        </Button>
+
+        <Button variant="success" onClick={() => ModalGerenciarCertificados({
+          oficina
+        })}>
+          Gerenciar certificado
         </Button>
       </Col>
     </Container>

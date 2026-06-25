@@ -35,6 +35,10 @@ export function criarModelAula(DB: Sequelize): ModelStatic<IAula> {
         type: DataTypes.TIME,
         allowNull: false,
       },
+      a_realizada: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      }
     },
     {
       tableName: "aula",

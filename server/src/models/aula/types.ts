@@ -8,4 +8,5 @@ export interface IAula extends Model {
   a_data: Date;
   a_hora_inicio: string;
   a_hora_fim: string;
+  a_realizada: boolean;
 }

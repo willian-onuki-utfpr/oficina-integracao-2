@@ -10,6 +10,9 @@ export function criarModelCertificado(
     {
       c_id: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
       },
       m_id: {
         type: DataTypes.INTEGER,

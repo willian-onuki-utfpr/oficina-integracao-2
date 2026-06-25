@@ -16,4 +16,6 @@ matriculaRouter.get(
   controller.findOficinasDisponiveis,
 );
 
+matriculaRouter.get("/alunos-oficina/:of_id", authMiddleware, controller.findAlunosMatriculadosOficina);
+
 export { matriculaRouter };

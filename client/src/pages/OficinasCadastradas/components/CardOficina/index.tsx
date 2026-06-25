@@ -1,6 +1,5 @@
 import { Button, Card, Col } from "react-bootstrap";
 import { Container, WallPaper } from "./styles";
-import type { IOficina } from "../../../Oficinas/interface";
 import { ImEnter } from "react-icons/im";
 import { MdInfoOutline } from "react-icons/md";
 import { ModalConfirmacao } from "../../../../components/ModalConfirmacao";
@@ -11,9 +10,15 @@ import { FiX } from "react-icons/fi";
 import { ModalMaisInformacoes } from "../ModalMaisInformacoes";
 import { BsCalendar2Week } from "react-icons/bs";
 import { ModalFrequencia } from "../ModalFrequencia";
+import type { IOficinaAluno } from "../..";
+import { GrCertificate } from "react-icons/gr";
+import { ModalCertificado } from "../ModalCertificado";
+import { api } from "../../../../services/api";
+import type { ICertificado } from "../../interface";
+import type { IUsuario } from "../../../Usuarios/interface";
 
 interface Props {
-  oficina: Partial<IOficina>;
+  oficina: Partial<IOficinaAluno>;
   status: string;
   refresh: () => Promise<void>;
 }
@@ -48,6 +53,17 @@ export const CardOficina = ({ oficina, status, refresh }: Props) => {
     await refresh();
   };
 
+
+  const handleModalCertificado = async () => {
+    const {data} = await api.get<{certificado: Partial<ICertificado>, aluno: Partial<IUsuario>}>(`/certificado/detalhes/${oficina.of_id}/${usuario.id}`);
+
+    await ModalCertificado({
+      certificado: data.certificado,
+      usuario: data.aluno,
+      oficina,
+    });
+  }
+
   return (
     <Container>
       <WallPaper id={oficina.of_id} />
@@ -60,24 +76,31 @@ export const CardOficina = ({ oficina, status, refresh }: Props) => {
         className="d-flex align-items-center justify-content-start gap-2 p-2"
       >
         {status === "matriculado" ? (
-          <>
-            <Button variant="danger" onClick={handleCancelarMatricula}>
-              <FiX className="mb-1 me-1" />
-              Cancelar inscrição
+          !!oficina.certificado_disponibilizado ? (
+            <Button variant="success" onClick={handleModalCertificado}>
+              <GrCertificate className="mb-1 me-1" />
+              Certificado
             </Button>
-            <Button
-              variant="primary"
-              onClick={() =>
-                ModalFrequencia({
-                  oficina,
-                  usu_id: usuario.id,
-                })
-              }
-            >
-              <BsCalendar2Week className="mb-1 me-1" />
-              Frequência
-            </Button>
-          </>
+          ) : (
+            <>
+              <Button variant="danger" onClick={handleCancelarMatricula}>
+                <FiX className="mb-1 me-1" />
+                Cancelar inscrição
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() =>
+                  ModalFrequencia({
+                    oficina,
+                    usu_id: usuario.id,
+                  })
+                }
+              >
+                <BsCalendar2Week className="mb-1 me-1" />
+                Frequência
+              </Button>
+            </>
+          )
         ) : (
           <>
             <Button variant="primary" onClick={handleCriarMatricula}>

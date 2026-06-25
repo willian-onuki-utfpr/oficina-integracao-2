@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import sequelize from "../../config/database";
 import {
   Aula,
+  Certificado,
   ConfiguracaoOficina,
   Matricula,
   Oficina,
@@ -12,6 +13,8 @@ import {
 // import { StatusMatricula } from "../../models/matricula/status";
 import { InferAttributes, Op } from "sequelize";
 import { IMatricula } from "../../models/matricula/types";
+import { alunoAprovado } from "../certificado";
+import { IUsuario } from "../../models/usuario/types";
 
 const create = async (
   req: Request<
@@ -127,6 +130,12 @@ const findByAluno = async (req: Request<{ usu_id: string }>, res: Response) => {
         usu_id,
         m_status: "matriculado",
       },
+      include: [
+        {
+          model: Certificado,
+          as: "certificado",
+        },
+      ],
     });
 
     const oficinas = await Oficina.findAll({
@@ -161,7 +170,21 @@ const findByAluno = async (req: Request<{ usu_id: string }>, res: Response) => {
       ],
     });
 
-    res.status(200).json(oficinas);
+    const oficinasAluno = oficinas.map((of) => {
+      const certificadoDisponibilizado = !!matriculas.find(
+        (m) => m.of_id === of.of_id,
+      )?.certificado?.c_id;
+      if (certificadoDisponibilizado) {
+        return {
+          ...of.get(),
+          certificado_disponibilizado: certificadoDisponibilizado,
+        };
+      } else {
+        return of.get();
+      }
+    });
+
+    res.status(200).json(oficinasAluno);
   } catch (error) {
     console.log(error);
 
@@ -229,9 +252,70 @@ const findOficinasDisponiveis = async (
   }
 };
 
+const findAlunosMatriculadosOficina = async (
+  req: Request<{ of_id: string }>,
+  res: Response,
+) => {
+  const of_id = Number(req.params.of_id);
+
+  // const transaction = await sequelize.transaction();
+  try {
+    const matriculas = await Matricula.findAll({
+      where: {
+        of_id,
+        m_status: "matriculado",
+      },
+      include: [
+        {
+          model: Usuario,
+          as: "aluno",
+        },
+        {
+          model: Certificado,
+          as: "certificado",
+        },
+      ],
+      // transaction,
+    });
+
+    const alunos = [] as Partial<
+      IUsuario & {
+        faltas: number;
+        aprovado: boolean;
+        certificado_disponibilizado: boolean;
+      }
+    >[];
+
+    for (const matricula of matriculas) {
+      const { aprovado, faltas } = await alunoAprovado(
+        matricula.aluno?.usu_id || -1,
+        of_id,
+        // , transaction
+      );
+      alunos.push({
+        usu_id: matricula.aluno?.usu_id,
+        usu_nome: matricula.aluno?.usu_nome,
+        aprovado,
+        faltas,
+        certificado_disponibilizado: !!matricula.certificado?.c_id,
+      });
+    }
+
+    // await transaction.commit();
+    res.status(200).json(alunos);
+  } catch (error) {
+    // await transaction.rollback();
+    console.log(error);
+    res.status(500).json({
+      message: "Erro ao buscar oficinas disponíveis.",
+    });
+  }
+};
+
 export default {
   create,
   cancel,
   findByAluno,
   findOficinasDisponiveis,
+  findAlunosMatriculadosOficina,
 };
