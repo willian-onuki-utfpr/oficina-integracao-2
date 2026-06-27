@@ -10,17 +10,17 @@ interface Props {
   refresh: () => Promise<void>;
 }
 
-export const CardOficina = ({ oficina, refresh }: Props) => {
+export const CardOficina = ({ oficina }: Props) => {
   return (
     <Container>
-      <WallPaper id={oficina.of_id} />
+      <WallPaper id={oficina.of_id ?? 0} />
       <Card.Body>
         <Card.Title>{oficina.tema?.t_nome}</Card.Title>
         <Card.Text>{oficina.of_descricao || "Sem descrição"}</Card.Text>
         <Card.Text>
           <strong>Alunos inscritos: </strong>
-          {!!oficina.matriculas.length
-            ? oficina.matriculas.length
+          {(oficina.matriculas?.length ?? 0) > 0
+            ? oficina.matriculas!.length
             : "Sem inscrição"}
         </Card.Text>
       </Card.Body>

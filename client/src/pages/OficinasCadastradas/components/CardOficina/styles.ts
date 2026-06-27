@@ -1,7 +1,7 @@
 import { Card } from "react-bootstrap";
 import styled from "styled-components";
 
-function colorFromId(id) {
+function colorFromId(id: number) {
   const hue = (id * 137.508) % 360;
   return `hsl(${hue}, 70%, 80%)`;
 }

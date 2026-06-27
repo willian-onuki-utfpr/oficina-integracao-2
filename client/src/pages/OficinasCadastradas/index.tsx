@@ -1,4 +1,4 @@
-import { Alert, Card, Col, Form, Spinner } from "react-bootstrap";
+import { Alert, Col, Form, Spinner } from "react-bootstrap";
 import { Container, Content, ListaOficinas } from "./styles";
 import { useEffect, useMemo, useState } from "react";
 import type { IOficina } from "../Oficinas/interface";

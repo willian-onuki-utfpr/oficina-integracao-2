@@ -25,7 +25,7 @@ interface Props {}
 
 export const Oficinas = ({}: Props) => {
   const [oficinas, setOficinas] = useState<Partial<IOficina>[]>([]);
-  const [filtros, setFiltros] = useState({
+  const [filtros] = useState({
     t_nome: "",
   });
   const [professores, setProfessores] = useState<Partial<IUsuario>[]>([]);
@@ -90,7 +90,7 @@ export const Oficinas = ({}: Props) => {
             legend="Planejamento das aulas"
             variant="primary"
             onClick={() => ModalPlanejamentoAulas({
-              of_id: of.of_id
+              of_id: of.of_id!
             })}
           >
             <LuFileText />
@@ -105,7 +105,7 @@ export const Oficinas = ({}: Props) => {
           <TooltipButton
             legend="Excluir"
             variant="danger"
-            onClick={() => handleExcluir(of.of_id)}
+            onClick={() => handleExcluir(of.of_id!)}
           >
             <FiTrash />
           </TooltipButton>
@@ -119,8 +119,8 @@ export const Oficinas = ({}: Props) => {
     const resOficinas = await buscarOficinas();
     const resProfessores = await buscarProfessores();
 
-    setOficinas(resOficinas);
-    setProfessores(resProfessores);
+    setOficinas(resOficinas ?? []);
+    setProfessores(resProfessores ?? []);
     setIsLoading(false);
   };
 

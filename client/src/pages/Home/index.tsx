@@ -1,4 +1,4 @@
-import { Alert, Card, Col, Spinner } from "react-bootstrap";
+import { Alert, Col, Spinner } from "react-bootstrap";
 import { useAuth } from "../../contexts/authContext";
 import { toast } from "react-toastify";
 import { serviceOficinaProfessor } from "./services/buscarOficinasDoProfessor";
@@ -18,7 +18,7 @@ export const Home = ({}: Props) => {
     setIsLoading(true);
     try {
       const resOficinas =
-        await serviceOficinaProfessor.buscarOficinasDoProfessor(usuario.id);
+        await serviceOficinaProfessor.buscarOficinasDoProfessor(usuario!.id);
 
       setOficinas(resOficinas);
     } catch (error) {

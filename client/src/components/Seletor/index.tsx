@@ -55,7 +55,7 @@ const Seletor: React.FC<Props> = ({
   };
 
   const customStyles = {
-    control: (provided: any, state: any) => ({
+    control: (provided: any, _state: any) => ({
       ...provided,
       display: "flex",
       borderRadius: "4px",
@@ -104,7 +104,7 @@ const Seletor: React.FC<Props> = ({
       // backgroundColor: tema.cor.input.bg,
       zIndex: 10,
     }),
-    option: (provided: any, state: any) => ({
+    option: (provided: any, _state: any) => ({
       ...provided,
       cursor: "pointer",
 

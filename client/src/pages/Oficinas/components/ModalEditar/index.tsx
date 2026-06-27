@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button, Col, Form, Modal, Spinner } from "react-bootstrap";
 import { type InstanceProps, create } from "react-modal-promise";
 import type { IOficina } from "../../interface";
@@ -32,7 +32,7 @@ const PromiseModal = ({
   const handleSubmit = async () => {
     setIsLoading(true);
 
-    const tutoresOriginais = oficinaCriada.tutores?.map((t) => t.usu_id) ?? [];
+    const tutoresOriginais = oficinaCriada.tutores?.map((t) => t.usu_id!) ?? [];
 
     const tutoresSelecionados = tutores.map((t) => Number(t.value));
 
@@ -70,13 +70,13 @@ const PromiseModal = ({
     const resProfessores = await buscarProfessores();
     const resTemas = await buscarTemas();
 
-    const tutoresSelecionados = oficinaCriada.tutores?.map((t) => ({
-      label: resProfessores?.find((p) => p.usu_id === t.usu_id)?.usu_nome,
-      value: t.usu_id,
+    const tutoresSelecionados = (oficinaCriada.tutores ?? []).map((t) => ({
+      label: resProfessores?.find((p) => p.usu_id === t.usu_id)?.usu_nome ?? "",
+      value: t.usu_id!,
     }));
     setTutores(tutoresSelecionados);
-    setProfessores(resProfessores);
-    setTemas(resTemas);
+    setProfessores(resProfessores ?? []);
+    setTemas(resTemas ?? []);
   };
 
   useEffect(() => {
@@ -145,8 +145,8 @@ const PromiseModal = ({
               placeholder="Selecione..."
               value={tutores}
               options={opcoesTutores.map((p) => ({
-                value: p.usu_id,
-                label: p.usu_nome,
+                value: p.usu_id!,
+                label: p.usu_nome!,
               }))}
               onChange={(selected) => setTutores([...selected])}
             />

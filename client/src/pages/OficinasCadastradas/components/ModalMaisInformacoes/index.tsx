@@ -200,7 +200,7 @@ const PromiseModal = ({
                             <td>{index + 1}</td>
                             <td>{aula.a_titulo}</td>
                             <td>
-                              {format(new Date(aula.a_data), "dd/MM/yyyy", {
+                              {format(new Date(aula.a_data!), "dd/MM/yyyy", {
                                 locale: ptBR,
                               })}
                             </td>

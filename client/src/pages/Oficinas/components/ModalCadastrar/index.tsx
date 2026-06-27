@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button, ButtonGroup, Col, Form, Modal } from "react-bootstrap";
 import { type InstanceProps, create } from "react-modal-promise";
 import type {
@@ -87,15 +87,15 @@ const PromiseModal = ({
   );
   const handleGerarAulas = () => {
     const datas = eachDayOfInterval({
-      start: parse(oficina.of_data_inicio, "yyyy-MM-dd", new Date()),
-      end: parse(oficina.of_data_fim, "yyyy-MM-dd", new Date()),
+      start: parse(oficina.of_data_inicio!, "yyyy-MM-dd", new Date()),
+      end: parse(oficina.of_data_fim!, "yyyy-MM-dd", new Date()),
     });
     const aulas = [] as Partial<IAula>[];
     let count = 1;
     for (const data of datas) {
       const diaSemana = getDay(data);
 
-      if (diasMap[configuracao.co_dia_semana] === diaSemana) {
+      if (diasMap[configuracao.co_dia_semana! as keyof typeof diasMap] === diaSemana) {
         aulas.push({
           a_titulo: `Aula ${count}`,
           a_conteudo: "",
@@ -140,8 +140,8 @@ const PromiseModal = ({
     const resProfessores = await buscarProfessores();
     const resTemas = await buscarTemas();
 
-    setProfessores(resProfessores);
-    setTemas(resTemas);
+    setProfessores(resProfessores ?? []);
+    setTemas(resTemas ?? []);
   };
 
   const opcoesTutores = useMemo(
@@ -342,8 +342,8 @@ const PromiseModal = ({
               placeholder="Selecione..."
               value={tutores}
               options={opcoesTutores.map((p) => ({
-                value: p.usu_id,
-                label: p.usu_nome,
+                value: p.usu_id!,
+                label: p.usu_nome!,
               }))}
               onChange={(selected) => setTutores([...selected])}
             />

@@ -31,7 +31,7 @@ const PromiseModal = ({
   of_id,
 }: Props & InstanceProps<unknown>) => {
   const [aulas, setAulas] = useState<Partial<IAula>[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [filtros, setFiltros] = useState<Partial<IAula>>({
     a_titulo: "",
@@ -65,7 +65,7 @@ const PromiseModal = ({
 
     if (!confirmacao) return;
      
-    await excluirAula(aula.a_id)
+    await excluirAula(aula.a_id!)
     await fetch();
   };
 
@@ -118,9 +118,10 @@ const PromiseModal = ({
   }, [aulasFiltradas, aulas]);
 
   const fetch = async () => {
+    setIsLoading(true);
     const resAulas = await buscarAulasOficina(of_id);
-
     setAulas(resAulas || []);
+    setIsLoading(false);
   };
 
   useEffect(() => {

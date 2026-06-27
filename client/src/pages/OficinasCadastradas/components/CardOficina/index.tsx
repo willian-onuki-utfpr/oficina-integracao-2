@@ -36,7 +36,7 @@ export const CardOficina = ({ oficina, status, refresh }: Props) => {
 
     await criarMatricula({
       of_id: oficina.of_id,
-      usu_id: usuario.id,
+      usu_id: usuario!.id,
     });
     await refresh();
   };
@@ -49,13 +49,13 @@ export const CardOficina = ({ oficina, status, refresh }: Props) => {
 
     if (!confirmacao) return;
 
-    await cancelarMatricula(usuario.id, oficina.of_id);
+    await cancelarMatricula(usuario!.id, oficina.of_id!);
     await refresh();
   };
 
 
   const handleModalCertificado = async () => {
-    const {data} = await api.get<{certificado: Partial<ICertificado>, aluno: Partial<IUsuario>}>(`/certificado/detalhes/${oficina.of_id}/${usuario.id}`);
+    const {data} = await api.get<{certificado: Partial<ICertificado>, aluno: Partial<IUsuario>}>(`/certificado/detalhes/${oficina.of_id}/${usuario!.id}`);
 
     await ModalCertificado({
       certificado: data.certificado,
@@ -66,7 +66,7 @@ export const CardOficina = ({ oficina, status, refresh }: Props) => {
 
   return (
     <Container>
-      <WallPaper id={oficina.of_id} />
+      <WallPaper id={oficina.of_id ?? 0} />
       <Card.Body>
         <Card.Title>{oficina.tema?.t_nome}</Card.Title>
         <Card.Text>{oficina.of_descricao || "Sem descrição"}</Card.Text>
@@ -92,7 +92,7 @@ export const CardOficina = ({ oficina, status, refresh }: Props) => {
                 onClick={() =>
                   ModalFrequencia({
                     oficina,
-                    usu_id: usuario.id,
+                    usu_id: usuario!.id,
                   })
                 }
               >

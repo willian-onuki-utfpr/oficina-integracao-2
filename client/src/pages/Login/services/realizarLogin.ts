@@ -8,7 +8,7 @@ export const realizarLogin = async (usu_email: string, usu_senha: string) => {
       email: string;
       tipo: string;
     };
-    token;
+    token: string;
   }>("/usuario/login", {
     usu_email,
     usu_senha,

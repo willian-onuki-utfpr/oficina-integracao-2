@@ -73,7 +73,7 @@ export const Usuarios = ({}: Props) => {
       const filtroTipo =
         !filtros.usu_tipo || usuario.usu_tipo === filtros.usu_tipo;
 
-      return filtroNome && filtroEmail && filtroTipo && usuarioAtual.id !== usuario.usu_id;
+      return filtroNome && filtroEmail && filtroTipo && usuarioAtual!.id !== usuario.usu_id;
     });
   }, [usuarios, filtros]);
 
@@ -82,7 +82,7 @@ export const Usuarios = ({}: Props) => {
       <tr key={`linha-usuario-${usuario.usu_id}-${index}`}>
         <td>{usuario.usu_nome}</td>
         <td>{usuario.usu_email}</td>
-        <td>{capitalizeFirstLetter(usuario.usu_tipo)}</td>
+        <td>{capitalizeFirstLetter(usuario.usu_tipo ?? "")}</td>
         <td className="d-flex align-items-center justify-content-center gap-2">
           <Button
             size="sm"
@@ -94,7 +94,7 @@ export const Usuarios = ({}: Props) => {
           <Button
             size="sm"
             variant="danger"
-            onClick={() => handleExcluir(usuario.usu_id)}
+            onClick={() => handleExcluir(usuario.usu_id!)}
           >
             <FiTrash />
           </Button>
@@ -106,7 +106,7 @@ export const Usuarios = ({}: Props) => {
   const fetch = async () => {
     setIsLoading(true);
     const res = await buscarUsuarios();
-    setUsuarios(res);
+    setUsuarios(res ?? []);
     setIsLoading(false);
   };
 

@@ -75,7 +75,7 @@ export const Temas = ({}: Props) => {
           <Button
             size="sm"
             variant="danger"
-            onClick={() => handleExcluir(tema.t_id)}
+            onClick={() => handleExcluir(tema.t_id!)}
           >
             <FiTrash />
           </Button>
@@ -87,7 +87,7 @@ export const Temas = ({}: Props) => {
   const fetch = async () => {
     setIsLoading(true);
     const res = await buscarTemas();
-    setTemas(res);
+    setTemas(res ?? []);
     setIsLoading(false);
   };
 

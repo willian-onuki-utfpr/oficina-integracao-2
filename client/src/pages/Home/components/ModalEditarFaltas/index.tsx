@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -11,7 +11,6 @@ import {
 import { type InstanceProps, create } from "react-modal-promise";
 import { toast } from "react-toastify";
 import { api } from "../../../../services/api";
-import type { IPresenca } from "../../interfaces";
 
 interface Props {
   usu_id: number;

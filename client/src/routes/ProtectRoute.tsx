@@ -8,7 +8,7 @@ interface Props {
 export const ProtectRoute = ({ children }: Props) => {
   const { usuario } = useAuth();
 
-  if (usuario.tipo === "aluno") {
+  if (usuario?.tipo === "aluno") {
     return null;
   }
 
