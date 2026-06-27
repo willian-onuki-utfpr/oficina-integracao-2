@@ -230,10 +230,53 @@ const findByProfessorCriador = async (
   }
 };
 
+const findAllRelatorio = async (req: Request, res: Response) => {
+  try {
+    const oficinas = await Oficina.findAll({
+      include: [
+        {
+          model: Tema,
+          as: "tema",
+          attributes: ["t_nome"],
+        },
+        {
+          model: Usuario,
+          as: "professor",
+          attributes: ["usu_id", "usu_nome"],
+        },
+        {
+          model: OficinaTutor,
+          as: "tutores",
+          include: [
+            {
+              model: Usuario,
+              as: "usuario",
+              attributes: ["usu_id", "usu_nome"],
+            },
+          ],
+        },
+        {
+          model: Matricula,
+          as: "matriculas",
+          attributes: ["m_id"],
+        },
+      ],
+    });
+
+    res.status(200).json(oficinas);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Não foi possível buscar as oficinas para o relatório.",
+    });
+  }
+};
+
 export default {
   create,
   findAll,
   update,
   destroy,
   findByProfessorCriador,
+  findAllRelatorio,
 };

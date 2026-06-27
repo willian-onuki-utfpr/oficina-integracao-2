@@ -1,0 +1,25 @@
+[
+  {
+    "of_id": 1,
+    "of_descricao": "Oficina de programação web moderna",
+    "tema": { "t_nome": "Programação Web" },
+    "professor": { "usu_id": 1, "usu_nome": "João Professor" },
+    "tutores": [
+      { "usu_id": 3, "of_id": 1, "usuario": { "usu_id": 3, "usu_nome": "Carlos Tutor" } },
+      { "usu_id": 4, "of_id": 1, "usuario": { "usu_id": 4, "usu_nome": "Mariana Tutora" } }
+    ],
+    "matriculas": [
+      { "m_id": 1 },
+      { "m_id": 2 },
+      { "m_id": 3 }
+    ]
+  },
+  {
+    "of_id": 2,
+    "of_descricao": "Oficina de banco de dados relacional",
+    "tema": { "t_nome": "Banco de Dados" },
+    "professor": { "usu_id": 2, "usu_nome": "Maria Professora" },
+    "tutores": [],
+    "matriculas": []
+  }
+]

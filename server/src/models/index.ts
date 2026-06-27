@@ -49,6 +49,7 @@ export const Tema = criarModelTema(sequelize);
   Oficina.hasMany(OficinaTutor, {foreignKey: "of_id", as: "tutores"})
   Oficina.hasMany(ConfiguracaoOficina, {foreignKey: "of_id", as: "configuracoes"})
   Oficina.belongsTo(Tema, {foreignKey: "t_id", as: "tema"})
+  Oficina.belongsTo(Usuario, {foreignKey: "of_professor_responsavel", as: "professor"})
 
   // Oficina tutor
   OficinaTutor.belongsTo(Usuario, { foreignKey: "usu_id", as: "usuario" });

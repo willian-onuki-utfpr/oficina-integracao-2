@@ -11,6 +11,14 @@ export const Content = styled.div`
   flex-grow: 1;
 `;
 
+export const Toolbar = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  border-bottom: 1px solid #dee2e6;
+  gap: 8px;
+`;
+
 export const ListaOficinas = styled.div`
   display: flex;
   flex-wrap: wrap;
