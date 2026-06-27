@@ -48,8 +48,8 @@ export const Login = () => {
       setLoading(true);
 
       const response = await realizarLogin(
-        data.usu_email,
-        data.usu_senha
+        data.usu_email || '',
+        data.usu_senha || ''
       );
 
       login(response);

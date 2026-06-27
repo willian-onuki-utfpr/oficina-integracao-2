@@ -28,7 +28,7 @@ api.interceptors.response.use(
 
     if (
       status === 401 &&
-      url !== "/login"
+      url !== "/usuario/login"
     ) {
       authStorage.clear();
 

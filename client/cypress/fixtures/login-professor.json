@@ -1,0 +1,9 @@
+{
+  "usuario": {
+    "id": 1,
+    "nome": "João Professor",
+    "email": "professor@utfpr.edu.br",
+    "tipo": "professor"
+  },
+  "token": "fake-jwt-token-professor"
+}

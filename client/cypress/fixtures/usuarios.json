@@ -1,0 +1,14 @@
+[
+  {
+    "usu_id": 10,
+    "usu_nome": "Carlos Silva",
+    "usu_email": "carlos@utfpr.edu.br",
+    "usu_tipo": "professor"
+  },
+  {
+    "usu_id": 11,
+    "usu_nome": "Ana Pereira",
+    "usu_email": "ana@utfpr.edu.br",
+    "usu_tipo": "aluno"
+  }
+]

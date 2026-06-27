@@ -1,0 +1,20 @@
+[
+  {
+    "usu_id": 11,
+    "usu_nome": "Ana Pereira",
+    "usu_email": "ana@utfpr.edu.br",
+    "usu_tipo": "aluno",
+    "faltas": 1,
+    "aprovado": true,
+    "certificado_disponibilizado": false
+  },
+  {
+    "usu_id": 12,
+    "usu_nome": "Pedro Alves",
+    "usu_email": "pedro@utfpr.edu.br",
+    "usu_tipo": "aluno",
+    "faltas": 5,
+    "aprovado": false,
+    "certificado_disponibilizado": false
+  }
+]

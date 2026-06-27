@@ -1,0 +1,20 @@
+[
+  {
+    "a_id": 1,
+    "of_id": 1,
+    "a_titulo": "Aula 1",
+    "a_conteudo": "",
+    "a_data": "2026-07-07",
+    "a_hora_inicio": "19:00",
+    "a_hora_fim": "21:00"
+  },
+  {
+    "a_id": 2,
+    "of_id": 1,
+    "a_titulo": "Aula 2",
+    "a_conteudo": "",
+    "a_data": "2026-07-14",
+    "a_hora_inicio": "19:00",
+    "a_hora_fim": "21:00"
+  }
+]
