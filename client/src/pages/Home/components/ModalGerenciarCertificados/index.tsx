@@ -17,6 +17,7 @@ import type { IUsuario } from "../../../Usuarios/interface";
 import { toast } from "react-toastify";
 import { api } from "../../../../services/api";
 import { ModalEditarFaltas } from "../ModalEditarFaltas";
+import { ModalConfirmacao } from "../../../../components/ModalConfirmacao";
 
 interface IAlunoOficina extends IUsuario {
   aprovado: boolean;
@@ -39,12 +40,20 @@ const PromiseModal = ({
   const [isLoading, setIsLoading] = useState(false);
   const [disponibilizando, setDisponibilizando] = useState(false);
 
-  const disponibilizaCertificadoPorAluno = async (
-    usu_id: number,
-  ) => {
+  const disponibilizaCertificadoPorAluno = async (usu_id: number) => {
     setDisponibilizando(true);
 
     try {
+      const confirmacao = await ModalConfirmacao({
+        variant: "success",
+        message: "Você realmente deseja disponibilizar o certificado este aluno?",
+      });
+
+      if (!confirmacao) {
+        setDisponibilizando(false);
+        return;
+      }
+
       await api.post(`/certificado/aluno/`, {
         of_id: oficina.of_id,
         usu_id,
@@ -52,43 +61,43 @@ const PromiseModal = ({
 
       await fetch();
 
-      toast.success(
-        "Certificado disponibilizado com sucesso.",
-      );
+      toast.success("Certificado disponibilizado com sucesso.");
     } catch (error) {
-      toast.error(
-        "Ocorreu um erro ao disponibilizar o certificado.",
-      );
+      toast.error("Ocorreu um erro ao disponibilizar o certificado.");
     } finally {
       setDisponibilizando(false);
     }
   };
 
-  const disponibilizaCertificadoDosAlunosAprovados =
-    async () => {
-      setDisponibilizando(true);
+  const disponibilizaCertificadoDosAlunosAprovados = async () => {
+    setDisponibilizando(true);
 
-      try {
-        await api.post(
-          `/certificado/alunos-aprovados/`,
-          {
-            of_id: oficina.of_id,
-          },
-        );
+    try {
+      const confirmacao = await ModalConfirmacao({
+        variant: "success",
+        message: "Você realmente deseja disponibilizar o certificado para todos os alunos aprovados?",
+      });
 
-        await fetch();
-
-        toast.success(
-          "Certificados disponibilizados para alunos aprovados com sucesso.",
-        );
-      } catch (error) {
-        toast.error(
-          "Ocorreu um erro ao disponibilizar os certificados.",
-        );
-      } finally {
+      if (!confirmacao) {
         setDisponibilizando(false);
+        return;
       }
-    };
+
+      await api.post(`/certificado/alunos-aprovados/`, {
+        of_id: oficina.of_id,
+      });
+
+      await fetch();
+
+      toast.success(
+        "Certificados disponibilizados para alunos aprovados com sucesso.",
+      );
+    } catch (error) {
+      toast.error("Ocorreu um erro ao disponibilizar os certificados.");
+    } finally {
+      setDisponibilizando(false);
+    }
+  };
 
   const handleEditarFalta = async (usu_id: number) => {
     await ModalEditarFaltas({ usu_id, of_id: oficina.of_id || -1 });
@@ -100,15 +109,13 @@ const PromiseModal = ({
     setIsLoading(true);
 
     try {
-      const { data } = await api.get<
-        Partial<IAlunoOficina>[]
-      >(`/matricula/alunos-oficina/${oficina.of_id}`);
+      const { data } = await api.get<Partial<IAlunoOficina>[]>(
+        `/matricula/alunos-oficina/${oficina.of_id}`,
+      );
 
       setAlunos(data);
     } catch (error) {
-      toast.error(
-        "Ocorreu um erro ao listar os alunos da oficina",
-      );
+      toast.error("Ocorreu um erro ao listar os alunos da oficina");
     } finally {
       setIsLoading(false);
     }
@@ -116,9 +123,7 @@ const PromiseModal = ({
 
   const alunosFiltrados = useMemo(() => {
     return alunos.filter((aluno) =>
-      aluno.usu_nome
-        ?.toLowerCase()
-        .includes(filtroNome.toLowerCase()),
+      aluno.usu_nome?.toLowerCase().includes(filtroNome.toLowerCase()),
     );
   }, [alunos, filtroNome]);
 
@@ -127,16 +132,9 @@ const PromiseModal = ({
   }, []);
 
   return (
-    <Modal
-      show={isOpen}
-      onHide={() => onResolve()}
-      centered
-      size="lg"
-    >
+    <Modal show={isOpen} onHide={() => onResolve()} centered size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>
-          Gerenciamento de Certificados
-        </Modal.Title>
+        <Modal.Title>Gerenciamento de Certificados</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -145,9 +143,7 @@ const PromiseModal = ({
             <Form.Control
               placeholder="Pesquisar aluno pelo nome..."
               value={filtroNome}
-              onChange={(e) =>
-                setFiltroNome(e.target.value)
-              }
+              onChange={(e) => setFiltroNome(e.target.value)}
             />
           </Col>
 
@@ -156,15 +152,10 @@ const PromiseModal = ({
               className="w-100"
               variant="success"
               disabled={disponibilizando}
-              onClick={
-                disponibilizaCertificadoDosAlunosAprovados
-              }
+              onClick={disponibilizaCertificadoDosAlunosAprovados}
             >
               {disponibilizando ? (
-                <Spinner
-                  animation="border"
-                  size="sm"
-                />
+                <Spinner animation="border" size="sm" />
               ) : (
                 "Disponibilizar Certificados para Todos os Aprovados"
               )}
@@ -177,9 +168,7 @@ const PromiseModal = ({
                 <Spinner animation="border" />
               </div>
             ) : !alunosFiltrados.length ? (
-              <Alert variant="secondary">
-                Nenhum aluno encontrado.
-              </Alert>
+              <Alert variant="secondary">Nenhum aluno encontrado.</Alert>
             ) : (
               <div
                 style={{
@@ -189,16 +178,12 @@ const PromiseModal = ({
               >
                 <ListGroup>
                   {alunosFiltrados.map((aluno) => (
-                    <ListGroup.Item
-                      key={aluno.usu_id}
-                    >
+                    <ListGroup.Item key={aluno.usu_id}>
                       <Card border="light">
                         <Card.Body>
                           <Row>
                             <Col md={12}>
-                              <h5 className="mb-3">
-                                {aluno.usu_nome}
-                              </h5>
+                              <h5 className="mb-3">{aluno.usu_nome}</h5>
                             </Col>
 
                             <Col
@@ -206,21 +191,14 @@ const PromiseModal = ({
                               className="d-flex flex-wrap align-items-center gap-2"
                             >
                               <span>
-                                <strong>
-                                  Faltas:
-                                </strong>{" "}
-                                {aluno.faltas}
+                                <strong>Faltas:</strong> {aluno.faltas}
                               </span>
 
                               <Button
                                 size="sm"
                                 variant="outline-primary"
                                 onClick={() =>
-                                  handleEditarFalta(
-                                    Number(
-                                      aluno.usu_id,
-                                    ),
-                                  )
+                                  handleEditarFalta(Number(aluno.usu_id))
                                 }
                               >
                                 Editar Faltas
@@ -229,62 +207,38 @@ const PromiseModal = ({
                               <span>|</span>
 
                               <span>
-                                <strong>
-                                  Limite de faltas:
-                                </strong>{" "}
-                                {
-                                  oficina.of_limite_faltas
-                                }
+                                <strong>Limite de faltas:</strong>{" "}
+                                {oficina.of_limite_faltas}
                               </span>
 
                               <span>|</span>
 
                               <span>
-                                <strong>
-                                  Aprovado:
-                                </strong>
+                                <strong>Aprovado:</strong>
                               </span>
 
-                              <Badge
-                                bg={
-                                  aluno.aprovado
-                                    ? "success"
-                                    : "danger"
-                                }
-                              >
-                                {aluno.aprovado
-                                  ? "Sim"
-                                  : "Não"}
+                              <Badge bg={aluno.aprovado ? "success" : "danger"}>
+                                {aluno.aprovado ? "Sim" : "Não"}
                               </Badge>
 
                               <span>|</span>
 
                               {aluno.certificado_disponibilizado ? (
-                                <Button
-                                  size="sm"
-                                  variant="secondary"
-                                  disabled
-                                >
+                                <Button size="sm" variant="secondary" disabled>
                                   Certificado Disponibilizado
                                 </Button>
                               ) : (
                                 <Button
                                   size="sm"
                                   variant="success"
-                                  disabled={
-                                    !aluno.aprovado ||
-                                    disponibilizando
-                                  }
+                                  disabled={!aluno.aprovado || disponibilizando}
                                   onClick={() =>
                                     disponibilizaCertificadoPorAluno(
-                                      Number(
-                                        aluno.usu_id,
-                                      ),
+                                      Number(aluno.usu_id),
                                     )
                                   }
                                 >
-                                  Disponibilizar
-                                  Certificado
+                                  Disponibilizar Certificado
                                 </Button>
                               )}
                             </Col>
@@ -301,10 +255,7 @@ const PromiseModal = ({
       </Modal.Body>
 
       <Modal.Footer>
-        <Button
-          variant="secondary"
-          onClick={() => onResolve()}
-        >
+        <Button variant="secondary" onClick={() => onResolve()}>
           Fechar
         </Button>
       </Modal.Footer>
@@ -312,5 +263,4 @@ const PromiseModal = ({
   );
 };
 
-export const ModalGerenciarCertificados =
-  create(PromiseModal);
+export const ModalGerenciarCertificados = create(PromiseModal);

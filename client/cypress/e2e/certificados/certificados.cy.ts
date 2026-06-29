@@ -1,4 +1,4 @@
-import { API, stubGetAs, stubPostAs } from '../../helpers';
+import { API, stubGetAs } from '../../helpers';
 
 // ─── Cenários ──────────────────────────────────────────────────────────────────
 // - Deve abrir o modal de gerenciamento de certificados.
@@ -140,12 +140,15 @@ describe('Certificados', () => {
 
     abrirModalCertificados();
 
-    cy.get('.modal').within(() => {
+    cy.get('.modal').first().within(() => {
       cy.contains('Ana Pereira')
         .closest('[class*="list-group-item"]')
         .contains('button', 'Disponibilizar Certificado')
         .click();
     });
+
+    // Modal de confirmação abre por cima (segundo modal)
+    cy.get('.modal').last().contains('button', 'Confirmar').click();
 
     cy.wait('@emitirIndividual');
     cy.contains('Certificado disponibilizado com sucesso.').should('be.visible');
@@ -161,9 +164,12 @@ describe('Certificados', () => {
 
     abrirModalCertificados();
 
-    cy.get('.modal').within(() => {
+    cy.get('.modal').first().within(() => {
       cy.contains('button', 'Disponibilizar Certificados para Todos os Aprovados').click();
     });
+
+    // Modal de confirmação abre por cima (segundo modal)
+    cy.get('.modal').last().contains('button', 'Confirmar').click();
 
     cy.wait('@emitirLote');
     cy.contains(

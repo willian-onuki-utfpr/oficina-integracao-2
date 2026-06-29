@@ -162,16 +162,10 @@ npm run start
 
 ## 🧪 Executar testes
 
-### Backend
-
-```bash
-npm run test
-```
-
 ### Frontend
 
 ```bash
-npm test
+npm run cy:run
 ```
 
 ---
